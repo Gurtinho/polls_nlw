@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Poll {
+  id         String   @id @default(uuid())
+  title      String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  options PollOption[]
+  vote    Vote[]
+
+  @@map("poll")
+}
+
+model PollOption {
+  id     String @id @default(uuid())
+  title  String
+  pollId String
+
+  poll Poll   @relation(fields: [pollId], references: [id])
+  vote Vote[]
+
+  @@map("polloption")
+}
+
+model Vote {
+  id           String   @id @default(uuid())
+  sessionId    String
+  pollId       String
+  pollOptionId String
+  created_at   DateTime @default(now())
+
+  pollOption PollOption @relation(fields: [pollOptionId], references: [id])
+  poll       Poll       @relation(fields: [pollId], references: [id])
+
+  @@unique([sessionId, pollId]) // the combination of these ids can only be used once
+  @@map("vote")
+}

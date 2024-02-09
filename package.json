@@ -4,14 +4,20 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsx watch src/http/server.ts"
+    "dev": "tsx watch src/http/server.ts",
+    "mig": "prisma migrate dev",
+    "std": "prisma studio"
   },
   "devDependencies": {
+    "@prisma/client": "^5.9.1",
     "@types/node": "^20.11.17",
+    "prisma": "^5.9.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "fastify": "^4.26.0"
+    "@fastify/cookie": "^9.3.1",
+    "fastify": "^4.26.0",
+    "zod": "^3.22.4"
   }
 }
